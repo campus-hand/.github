@@ -1,0 +1,11 @@
+name: Feature
+description: A platform feature to build on its own feature/* branch
+labels: [feature]
+body:
+  - type: textarea
+    id: goal
+    attributes: { label: Goal, description: Who it is for and what they can do after }
+    validations: { required: true }
+  - type: textarea
+    id: done
+    attributes: { label: Done when, description: Acceptance checks and the tests that prove them }

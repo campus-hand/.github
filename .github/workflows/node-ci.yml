@@ -1,0 +1,25 @@
+name: node-ci
+on:
+  workflow_call:
+    inputs:
+      size-limit:
+        type: boolean
+        default: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test:cov
+      - run: pnpm build
+      - if: inputs.size-limit
+        run: pnpm size

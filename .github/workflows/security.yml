@@ -1,0 +1,15 @@
+name: security
+on:
+  workflow_call: {}
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: gitleaks (committed secrets)
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest git /repo --redact --verbose
+      - name: OSV-Scanner (vulnerable packages)
+        run: docker run --rm -v "$PWD:/src" ghcr.io/google/osv-scanner:latest scan source -r /src
